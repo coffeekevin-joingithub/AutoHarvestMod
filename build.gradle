@@ -95,3 +95,9 @@ publishing {
 		// retrieving dependencies.
 	}
 }
+
+configurations.all {
+   resolutionStrategy {
+     force("net.fabricmc:fabric-loader:$loader_version")
+   }
+}
