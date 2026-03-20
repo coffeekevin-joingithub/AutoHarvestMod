@@ -7,7 +7,7 @@
 *\*這是個客戶端的模組\**
 
 ### 需求
-1. Minecraft 1.14/1.15/1.16
+1. Minecraft 1.14/1.15/1.16/1.12.11
 2. [Fabric](https://fabricmc.net/wiki/install)
 3. [Fabric API](https://www.curseforge.com/minecraft/mc-mods/fabric-api)
 
@@ -22,6 +22,7 @@
  - 鋤草：打擊你周圍的草和花
  - 餵食：用手中的物品餵養周圍的動物。如果你手中拿著剪刀將剪取剪羊毛
  - 釣魚：自動釣魚
+ - 催熟：加快作物生長
 
 支援的作物：
 
