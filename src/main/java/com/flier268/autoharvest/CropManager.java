@@ -34,7 +34,7 @@ public class CropManager {
             add(Blocks.ACACIA_SAPLING);
             add(Blocks.DARK_OAK_SAPLING);
             add(Blocks.FERN);
-            add(Blocks.GRASS);
+            add(Blocks.SHORT_GRASS);
             add(Blocks.DEAD_BUSH);
             add(Blocks.BROWN_MUSHROOM);
             add(Blocks.RED_MUSHROOM);
@@ -75,21 +75,24 @@ public class CropManager {
     public static final BiMap<Block, Item> SEED_MAP = HashBiMap.create(
             new HashMap<>() {
                 {
-                    put(Blocks.SWEET_BERRY_BUSH, Items.SWEET_BERRIES);
-                    put(Blocks.WHEAT, Items.WHEAT_SEEDS);
-                    put(Blocks.POTATOES, Items.POTATO);
-                    put(Blocks.CARROTS, Items.CARROT);
-                    put(Blocks.BEETROOTS, Items.BEETROOT_SEEDS);
-                    put(Blocks.NETHER_WART, Items.NETHER_WART);
-                    put(Blocks.MELON_STEM, Items.MELON_SEEDS);
-                    put(Blocks.PUMPKIN_STEM, Items.PUMPKIN_SEEDS);
-                    put(Blocks.SUGAR_CANE, Items.SUGAR_CANE);
-                    put(Blocks.GRASS, Items.GRASS);
-                    put(Blocks.BAMBOO, Items.BAMBOO);
-                    // 1.16
-                    put(Blocks.CRIMSON_FUNGUS, Items.CRIMSON_FUNGUS);
-                    put(Blocks.WARPED_FUNGUS, Items.WARPED_FUNGUS);
-                    put(Blocks.KELP, Items.KELP);
+                    //注释内容为对应植株（非种子）最早加入时间，而不是其变为可种植作物的最早时间
+                    put(Blocks.WHEAT, Items.WHEAT_SEEDS);                   // Indev 20100206 - 小麦
+                    put(Blocks.SUGAR_CANE, Items.SUGAR_CANE);               // Alpha 1.0.11 - 甘蔗
+                    put(Blocks.PUMPKIN_STEM, Items.PUMPKIN_SEEDS);          // Alpha 1.2.0 - 南瓜
+                    put(Blocks.SHORT_GRASS, Items.SHORT_GRASS);             // Beta 1.6 TB3 - 草（小型）
+                    put(Blocks.MELON_STEM, Items.MELON_SEEDS);              // Beta 1.8-pre1 - 西瓜
+                    put(Blocks.NETHER_WART, Items.NETHER_WART);             // 1.0.0 - 下界疣
+                    put(Blocks.POTATOES, Items.POTATO);                     // 1.4.2 - 马铃薯
+                    put(Blocks.CARROTS, Items.CARROT);                      // 1.4.2 - 胡萝卜
+                    put(Blocks.BEETROOTS, Items.BEETROOT_SEEDS);            // 1.9 - 甜菜根
+                    put(Blocks.CHORUS_PLANT, Items.CHORUS_FRUIT);           // 1.9 - 紫颂植株
+                    put(Blocks.KELP, Items.KELP);                           // 1.13 - 海带
+                    put(Blocks.BAMBOO, Items.BAMBOO);                       // 1.14 - 竹子
+                    put(Blocks.SWEET_BERRY_BUSH, Items.SWEET_BERRIES);      // 1.14 - 甜浆果
+                    put(Blocks.CRIMSON_FUNGUS, Items.CRIMSON_FUNGUS);       // 1.16 - 绯红菌
+                    put(Blocks.WARPED_FUNGUS, Items.WARPED_FUNGUS);         // 1.16 - 诡异菌
+                    put(Blocks.PITCHER_CROP, Items.PITCHER_POD);            // 1.19.4 - 瓶子草
+                    put(Blocks.TORCHFLOWER_CROP, Items.TORCHFLOWER_SEEDS);  // 1.19.4 - 火把花
                 }
             });
 
@@ -97,37 +100,47 @@ public class CropManager {
     public static final Multimap<Item, Class<? extends AnimalEntity>> SHEAR_MAP;
     static {
         FEED_MAP = ArrayListMultimap.create();
+
+        //金胡萝卜 - 马
         FEED_MAP.put(Items.GOLDEN_CARROT, HorseEntity.class);
 
+        //小麦 - 牛、羊、哞菇
         FEED_MAP.put(Items.WHEAT, SheepEntity.class);
         FEED_MAP.put(Items.WHEAT, CowEntity.class);
         FEED_MAP.put(Items.WHEAT, MooshroomEntity.class);
 
+        //胡萝卜、马铃薯、甜菜根 - 猪
         FEED_MAP.put(Items.CARROT, PigEntity.class);
         FEED_MAP.put(Items.POTATO, PigEntity.class);
         FEED_MAP.put(Items.BEETROOT, PigEntity.class);
 
+        //南瓜种子、西瓜种子、小麦种子、甜菜种子 - 鸡
         FEED_MAP.put(Items.PUMPKIN_SEEDS, ChickenEntity.class);
         FEED_MAP.put(Items.MELON_SEEDS, ChickenEntity.class);
         FEED_MAP.put(Items.WHEAT_SEEDS, ChickenEntity.class);
         FEED_MAP.put(Items.BEETROOT_SEEDS, ChickenEntity.class);
 
+        //腐肉 - 狼（野生）
         FEED_MAP.put(Items.ROTTEN_FLESH, WolfEntity.class);
 
+        //蒲公英、胡萝卜、小麦种子 - 兔子
         FEED_MAP.put(Items.DANDELION, RabbitEntity.class);
         FEED_MAP.put(Items.CARROT, RabbitEntity.class);
         FEED_MAP.put(Items.WHEAT_SEEDS, ParrotEntity.class);
 
-        // 1.13
+        // 1.11 - 干草捆 - 羊驼
+        FEED_MAP.put(Items.HAY_BLOCK, LlamaEntity.class);
+
+        // 1.13 - 海草 - 海龟
         FEED_MAP.put(Items.SEAGRASS, TurtleEntity.class);
 
         // 1.14
-        FEED_MAP.put(Items.KELP, PandaEntity.class);
-        FEED_MAP.put(Items.SWEET_BERRIES, FoxEntity.class);
-        FEED_MAP.put(Items.COD, CatEntity.class);
-        FEED_MAP.put(Items.SALMON, CatEntity.class);
+        FEED_MAP.put(Items.KELP, PandaEntity.class);        //海带 - 熊猫
+        FEED_MAP.put(Items.SWEET_BERRIES, FoxEntity.class); //甜浆果 - 狐狸
+        FEED_MAP.put(Items.COD, CatEntity.class);           //生鲑鱼 - 猫
+        FEED_MAP.put(Items.SALMON, CatEntity.class);        //生鲑鱼 - 猫
 
-        // 1.15
+        // 1.15 - 各类花 - 蜜蜂
         FEED_MAP.put(Items.DANDELION, BeeEntity.class);
         FEED_MAP.put(Items.POPPY, BeeEntity.class);
         FEED_MAP.put(Items.BLUE_ORCHID, BeeEntity.class);
@@ -147,13 +160,19 @@ public class CropManager {
         FEED_MAP.put(Items.PEONY, BeeEntity.class);
 
         // 1.16
-        FEED_MAP.put(Items.WARPED_FUNGUS, StriderEntity.class);
-        FEED_MAP.put(Items.CRIMSON_FUNGUS, HoglinEntity.class);
+        FEED_MAP.put(Items.WARPED_FUNGUS, StriderEntity.class); //诡异菌 - 炽足兽
+        FEED_MAP.put(Items.CRIMSON_FUNGUS, HoglinEntity.class); //绯红菌 - 疣猪兽
 
         // 1.17
-        FEED_MAP.put(Items.WHEAT, GoatEntity.class);
+        FEED_MAP.put(Items.WHEAT, GoatEntity.class); //小麦 - 山羊
+        FEED_MAP.put(Items.GLOW_BERRIES, FoxEntity.class); //发光浆果 - 狐狸
         // disabled due to complexity of interaction
         // FEED_MAP.put(Items.TROPICAL_FISH_BUCKET, AxolotlEntity.class);
+
+        // 1.19
+        FEED_MAP.put(Items.SLIME_BALL, FrogEntity.class); // 粘液球 - 青蛙
+        FEED_MAP.put(Items.CACTUS, CamelEntity.class); // 仙人掌 - 骆驼
+        FEED_MAP.put(Items.TORCHFLOWER_SEEDS, SnifferEntity.class); // 火把花种子 - 嗅探兽
 
         SHEAR_MAP = ArrayListMultimap.create();
         SHEAR_MAP.put(Items.SHEARS, SheepEntity.class);

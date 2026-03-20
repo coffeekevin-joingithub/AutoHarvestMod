@@ -48,7 +48,9 @@ public class TaskManager {
                 assert mc.player != null;
                 PlayerScreenHandler container = mc.player.playerScreenHandler;
                 if ((int) line.Args[0] < 9) {
-                    MinecraftClient.getInstance().player.getInventory().selectedSlot = (int) line.Args[0];
+// 更新至1.21.8原本資料變成不可直接存取，需要更改指令
+                    MinecraftClient.getInstance().player.getInventory().
+                    setSelectedSlot((int) line.Args[0]);
                 } else {
                     assert mc.interactionManager != null;
                     mc.interactionManager.clickSlot(container.syncId, (int) line.Args[0], (int) line.Args[1], SlotActionType.SWAP, mc.player);

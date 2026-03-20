@@ -2,8 +2,7 @@ package com.flier268.autoharvest;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.Text;
 
 public class AutoHarvest implements ClientModInitializer {
     public static final String MOD_NAME = "autoharvest";
@@ -69,6 +68,10 @@ public class AutoHarvest implements ClientModInitializer {
             return;
         if (MinecraftClient.getInstance().player == null)
             return;
-        MinecraftClient.getInstance().player.sendMessage(new LiteralText(new TranslatableText("notify.prefix").getString() + new TranslatableText(key, obj).getString()), true);
+        MinecraftClient.getInstance().player.sendMessage(
+			Text.literal(
+				Text.translatable("notify.prefix").getString() + Text.translatable(key, obj).getString()
+			)
+		, true);
     }
 }

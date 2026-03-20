@@ -5,8 +5,8 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
-import net.minecraft.client.util.InputUtil;
-import net.minecraft.text.TranslatableText;
+// import net.minecraft.client.util.InputUtil;
+import net.minecraft.text.Text;
 import org.lwjgl.glfw.GLFW;
 
 public class KeyPressListener {
@@ -23,48 +23,60 @@ public class KeyPressListener {
     private final KeyBinding Key_BONEMEALING;
 
     public KeyPressListener() {
-        String categoryGeneral = new TranslatableText("key.category.general").getString();
-        String categorySwitchTo = new TranslatableText("key.category.switchTo").getString();
-        key_ModeChange = new KeyBinding("key.general.modechange",
-                InputUtil.Type.KEYSYM,
-                GLFW.GLFW_KEY_H,
-                categoryGeneral
+        // String categoryGeneral = Text.translatable("key.category.general").getString();
+        // String categorySwitchTo = Text.translatable("key.category.switchTo").getString();
+        key_ModeChange = new KeyBinding(
+            "key.general.modechange",
+            GLFW.GLFW_KEY_H,
+            // categoryGeneral
+            KeyBinding.Category.MISC
         );
-        key_Switch = new KeyBinding("key.general.switch",
+        key_Switch = new KeyBinding(
+            "key.general.switch",
                 GLFW.GLFW_KEY_J,
-                categoryGeneral
+                // categoryGeneral
+                KeyBinding.Category.MISC
         );
-        key_Config = new KeyBinding("key.general.config",
+        key_Config = new KeyBinding(
+            "key.general.config",
                 GLFW.GLFW_KEY_K,
-                categoryGeneral
+                // categoryGeneral
+                KeyBinding.Category.MISC
         );
         key_HARVEST = new KeyBinding("harvest",
                 GLFW.GLFW_KEY_UNKNOWN,
-                categorySwitchTo
+                // categorySwitchTo
+                KeyBinding.Category.MISC
         );
         key_PLANT = new KeyBinding("plant",
                 GLFW.GLFW_KEY_UNKNOWN,
-                categorySwitchTo
+                // categorySwitchTo
+                KeyBinding.Category.MISC
         );
         key_Farmer = new KeyBinding("farmer",
                 GLFW.GLFW_KEY_UNKNOWN,
-                categorySwitchTo
+                // categorySwitchTo
+                KeyBinding.Category.MISC
         );
         key_SEED = new KeyBinding("seed",
                 GLFW.GLFW_KEY_UNKNOWN,
-                categorySwitchTo
+                // categorySwitchTo
+                KeyBinding.Category.MISC
         );
         key_FEED = new KeyBinding("feed",
                 GLFW.GLFW_KEY_UNKNOWN,
-                categorySwitchTo
+                // categorySwitchTo
+                KeyBinding.Category.MISC
         );
         key_FISHING = new KeyBinding("fishing",
                 GLFW.GLFW_KEY_UNKNOWN,
-                categorySwitchTo
+                // categorySwitchTo
+                KeyBinding.Category.MISC
         );
         Key_BONEMEALING = new KeyBinding("bonemealing",
                 GLFW.GLFW_KEY_UNKNOWN,
-                categorySwitchTo
+                // categorySwitchTo
+                KeyBinding.Category.MISC
         );
         KeyBindingHelper.registerKeyBinding(key_ModeChange);
         KeyBindingHelper.registerKeyBinding(key_Switch);
@@ -112,7 +124,7 @@ public class KeyPressListener {
                 modeName = AutoHarvest.instance.toSpecifiedMode(AutoHarvest.HarvestMode.BONEMEALING).toString().toLowerCase();
             }
             if (modeName != null)
-                AutoHarvest.msg("notify.switch_to", new TranslatableText(modeName).getString());
+                AutoHarvest.msg("notify.switch_to", Text.translatable(modeName).getString());
         }
     }
 }
