@@ -1,8 +1,8 @@
 package com.flier268.autoharvest;
 
 import net.fabricmc.api.ClientModInitializer;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.text.Text;
+import net.minecraft.client.Minecraft;
+import net.minecraft.network.chat.Component;
 
 public class AutoHarvest implements ClientModInitializer {
     public static final String MOD_NAME = "autoharvest";
@@ -46,7 +46,7 @@ public class AutoHarvest implements ClientModInitializer {
     public HarvestMode toSpecifiedMode(HarvestMode mode) {
         //setDisabled();
         if (listener == null) {
-            listener = new TickListener(configure, MinecraftClient.getInstance().player);
+            listener = new TickListener(configure, Minecraft.getInstance().player);
         } else
             listener.Reset();
         this.mode = mode;
@@ -56,7 +56,7 @@ public class AutoHarvest implements ClientModInitializer {
     public HarvestMode toNextMode() {
         //setDisabled();
         if (listener == null) {
-            listener = new TickListener(configure, MinecraftClient.getInstance().player);
+            listener = new TickListener(configure, Minecraft.getInstance().player);
         } else
             listener.Reset();
         mode = mode.next();
@@ -64,14 +64,14 @@ public class AutoHarvest implements ClientModInitializer {
     }
 
     public static void msg(String key, Object... obj) {
-        if (MinecraftClient.getInstance() == null)
+        if (Minecraft.getInstance() == null)
             return;
-        if (MinecraftClient.getInstance().player == null)
+        if (Minecraft.getInstance().player == null)
             return;
-        MinecraftClient.getInstance().player.sendMessage(
-			Text.literal(
-				Text.translatable("notify.prefix").getString() + Text.translatable(key, obj).getString()
-			)
-		, true);
+        Minecraft.getInstance().player.sendSystemMessage(
+			Component.translatable("notify.prefix")
+            .append(Component.translatable(key, obj))
+            // 這個 代表顯示在 Hotbar (快捷欄) 上方
+    );
     }
 }

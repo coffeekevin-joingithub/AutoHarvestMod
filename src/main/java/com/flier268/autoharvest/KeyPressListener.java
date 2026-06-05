@@ -2,105 +2,106 @@ package com.flier268.autoharvest;
 
 import com.flier268.autoharvest.Plugin.ClothConfig;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.option.KeyBinding;
-// import net.minecraft.client.util.InputUtil;
-import net.minecraft.text.Text;
+// fabric-api-0.140.3+26.1
+// 開始配合微軟取消反混淆代碼的文化，使得KeyMappingHelper變成KeyMappingHelper
+import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
+import net.minecraft.client.KeyMapping;
+import net.minecraft.client.Minecraft;
+import net.minecraft.network.chat.Component;
 import org.lwjgl.glfw.GLFW;
 
 public class KeyPressListener {
 
-    private final KeyBinding key_Switch;
-    private final KeyBinding key_ModeChange;
-    private final KeyBinding key_Config;
-    private final KeyBinding key_HARVEST;
-    private final KeyBinding key_PLANT;
-    private final KeyBinding key_Farmer;
-    private final KeyBinding key_SEED;
-    private final KeyBinding key_FEED;
-    private final KeyBinding key_FISHING;
-    private final KeyBinding Key_BONEMEALING;
+    private final KeyMapping key_Switch;
+    private final KeyMapping key_ModeChange;
+    private final KeyMapping key_Config;
+    private final KeyMapping key_HARVEST;
+    private final KeyMapping key_PLANT;
+    private final KeyMapping key_Farmer;
+    private final KeyMapping key_SEED;
+    private final KeyMapping key_FEED;
+    private final KeyMapping key_FISHING;
+    private final KeyMapping Key_BONEMEALING;
 
     public KeyPressListener() {
         // String categoryGeneral = Text.translatable("key.category.general").getString();
         // String categorySwitchTo = Text.translatable("key.category.switchTo").getString();
-        key_ModeChange = new KeyBinding(
+        key_ModeChange = new KeyMapping(
             "key.general.modechange",
             GLFW.GLFW_KEY_H,
             // categoryGeneral
-            KeyBinding.Category.MISC
+            KeyMapping.Category.MISC
         );
-        key_Switch = new KeyBinding(
+        key_Switch = new KeyMapping(
             "key.general.switch",
                 GLFW.GLFW_KEY_J,
                 // categoryGeneral
-                KeyBinding.Category.MISC
+                KeyMapping.Category.MISC
         );
-        key_Config = new KeyBinding(
+        key_Config = new KeyMapping(
             "key.general.config",
                 GLFW.GLFW_KEY_K,
                 // categoryGeneral
-                KeyBinding.Category.MISC
+                KeyMapping.Category.MISC
         );
-        key_HARVEST = new KeyBinding("harvest",
+        key_HARVEST = new KeyMapping("harvest",
                 GLFW.GLFW_KEY_UNKNOWN,
                 // categorySwitchTo
-                KeyBinding.Category.MISC
+                KeyMapping.Category.MISC
         );
-        key_PLANT = new KeyBinding("plant",
+        key_PLANT = new KeyMapping("plant",
                 GLFW.GLFW_KEY_UNKNOWN,
                 // categorySwitchTo
-                KeyBinding.Category.MISC
+                KeyMapping.Category.MISC
         );
-        key_Farmer = new KeyBinding("farmer",
+        key_Farmer = new KeyMapping("farmer",
                 GLFW.GLFW_KEY_UNKNOWN,
                 // categorySwitchTo
-                KeyBinding.Category.MISC
+                KeyMapping.Category.MISC
         );
-        key_SEED = new KeyBinding("seed",
+        key_SEED = new KeyMapping("seed",
                 GLFW.GLFW_KEY_UNKNOWN,
                 // categorySwitchTo
-                KeyBinding.Category.MISC
+                KeyMapping.Category.MISC
         );
-        key_FEED = new KeyBinding("feed",
+        key_FEED = new KeyMapping("feed",
                 GLFW.GLFW_KEY_UNKNOWN,
                 // categorySwitchTo
-                KeyBinding.Category.MISC
+                KeyMapping.Category.MISC
         );
-        key_FISHING = new KeyBinding("fishing",
+        key_FISHING = new KeyMapping("fishing",
                 GLFW.GLFW_KEY_UNKNOWN,
                 // categorySwitchTo
-                KeyBinding.Category.MISC
+                KeyMapping.Category.MISC
         );
-        Key_BONEMEALING = new KeyBinding("bonemealing",
+        Key_BONEMEALING = new KeyMapping("bonemealing",
                 GLFW.GLFW_KEY_UNKNOWN,
                 // categorySwitchTo
-                KeyBinding.Category.MISC
+                KeyMapping.Category.MISC
         );
-        KeyBindingHelper.registerKeyBinding(key_ModeChange);
-        KeyBindingHelper.registerKeyBinding(key_Switch);
-        KeyBindingHelper.registerKeyBinding(key_Config);
-        KeyBindingHelper.registerKeyBinding(key_HARVEST);
-        KeyBindingHelper.registerKeyBinding(key_PLANT);
-        KeyBindingHelper.registerKeyBinding(key_Farmer);
-        KeyBindingHelper.registerKeyBinding(key_SEED);
-        KeyBindingHelper.registerKeyBinding(key_FEED);
-        KeyBindingHelper.registerKeyBinding(key_FISHING);
-        KeyBindingHelper.registerKeyBinding(Key_BONEMEALING);
+        KeyMappingHelper.registerKeyMapping(key_ModeChange);
+        KeyMappingHelper.registerKeyMapping(key_Switch);
+        KeyMappingHelper.registerKeyMapping(key_Config);
+        KeyMappingHelper.registerKeyMapping(key_HARVEST);
+        KeyMappingHelper.registerKeyMapping(key_PLANT);
+        KeyMappingHelper.registerKeyMapping(key_Farmer);
+        KeyMappingHelper.registerKeyMapping(key_SEED);
+        KeyMappingHelper.registerKeyMapping(key_FEED);
+        KeyMappingHelper.registerKeyMapping(key_FISHING);
+        KeyMappingHelper.registerKeyMapping(Key_BONEMEALING);
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> onProcessKey());
     }
 
     public void onProcessKey() {
-        if (key_Switch.wasPressed()) {
+        if (key_Switch.consumeClick()) {
             AutoHarvest.instance.Switch = !AutoHarvest.instance.Switch;
             AutoHarvest.msg("notify.turn." + (AutoHarvest.instance.Switch ? "on" : "off"));
-        } else if (key_Config.wasPressed()) {
-            MinecraftClient.getInstance().setScreen(ClothConfig.openConfigScreen(MinecraftClient.getInstance().currentScreen));
+        } else if (key_Config.consumeClick()) {
+            Minecraft.getInstance().setScreen(ClothConfig.openConfigScreen(Minecraft.getInstance().screen));
         } else {
             String modeName = null;
-            if (key_ModeChange.wasPressed()) {
+            if (key_ModeChange.consumeClick()) {
                 if (AutoHarvest.instance.overlayRemainingTick == 0) {
                     AutoHarvest.instance.overlayRemainingTick = 60;
                     modeName = AutoHarvest.instance.mode.toString().toLowerCase();
@@ -108,23 +109,23 @@ public class KeyPressListener {
                     AutoHarvest.instance.overlayRemainingTick = 60;
                     modeName = AutoHarvest.instance.toNextMode().toString().toLowerCase();
                 }
-            } else if (key_HARVEST.wasPressed()) {
+            } else if (key_HARVEST.consumeClick()) {
                 modeName = AutoHarvest.instance.toSpecifiedMode(AutoHarvest.HarvestMode.HARVEST).toString().toLowerCase();
-            } else if (key_PLANT.wasPressed()) {
+            } else if (key_PLANT.consumeClick()) {
                 modeName = AutoHarvest.instance.toSpecifiedMode(AutoHarvest.HarvestMode.PLANT).toString().toLowerCase();
-            } else if (key_Farmer.wasPressed()) {
+            } else if (key_Farmer.consumeClick()) {
                 modeName = AutoHarvest.instance.toSpecifiedMode(AutoHarvest.HarvestMode.Farmer).toString().toLowerCase();
-            } else if (key_SEED.wasPressed()) {
+            } else if (key_SEED.consumeClick()) {
                 modeName = AutoHarvest.instance.toSpecifiedMode(AutoHarvest.HarvestMode.SEED).toString().toLowerCase();
-            } else if (key_FEED.wasPressed()) {
+            } else if (key_FEED.consumeClick()) {
                 modeName = AutoHarvest.instance.toSpecifiedMode(AutoHarvest.HarvestMode.FEED).toString().toLowerCase();
-            } else if (key_FISHING.wasPressed()) {
+            } else if (key_FISHING.consumeClick()) {
                 modeName = AutoHarvest.instance.toSpecifiedMode(AutoHarvest.HarvestMode.FISHING).toString().toLowerCase();
-            } else if (Key_BONEMEALING.wasPressed()) {
+            } else if (Key_BONEMEALING.consumeClick()) {
                 modeName = AutoHarvest.instance.toSpecifiedMode(AutoHarvest.HarvestMode.BONEMEALING).toString().toLowerCase();
             }
             if (modeName != null)
-                AutoHarvest.msg("notify.switch_to", Text.translatable(modeName).getString());
+                AutoHarvest.msg("notify.switch_to", Component.translatable(modeName).getString());
         }
     }
 }
